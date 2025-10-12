@@ -3,8 +3,11 @@ FROM php:8.2-cli
 # 작업 디렉토리 설정
 WORKDIR /app
 
-# PHP MySQL 확장 설치
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# 필요한 패키지 설치
+RUN apt-get update && apt-get install -y \
+    libsqlite3-dev \
+    && docker-php-ext-install pdo pdo_sqlite \
+    && rm -rf /var/lib/apt/lists/*
 
 # 애플리케이션 파일 복사
 COPY . /app
