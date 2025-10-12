@@ -12,29 +12,22 @@ if ($id <= 0) {
 $conn = getDBConnection();
 
 // 조회수 증가
-$update_sql = "UPDATE posts SET views = views + 1 WHERE id = ?";
+$update_sql = "UPDATE posts SET views = views + 1 WHERE id = :id";
 $update_stmt = $conn->prepare($update_sql);
-$update_stmt->bind_param("i", $id);
+$update_stmt->bindParam(':id', $id, PDO::PARAM_INT);
 $update_stmt->execute();
-$update_stmt->close();
 
 // 게시글 조회
-$sql = "SELECT * FROM posts WHERE id = ?";
+$sql = "SELECT * FROM posts WHERE id = :id";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
+$stmt->bindParam(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
-$result = $stmt->get_result();
+$post = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($result->num_rows === 0) {
-    $stmt->close();
-    $conn->close();
+if (!$post) {
     header("Location: index.php");
     exit;
 }
-
-$post = $result->fetch_assoc();
-$stmt->close();
-$conn->close();
 ?>
 
 <!DOCTYPE html>

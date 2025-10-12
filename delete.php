@@ -12,18 +12,14 @@ if ($id <= 0) {
 $conn = getDBConnection();
 
 // 게시글 삭제
-$sql = "DELETE FROM posts WHERE id = ?";
+$sql = "DELETE FROM posts WHERE id = :id";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
+$stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
 if ($stmt->execute()) {
-    $stmt->close();
-    $conn->close();
     header("Location: index.php");
     exit;
 } else {
-    $stmt->close();
-    $conn->close();
     echo "게시글 삭제에 실패했습니다.";
 }
 ?>

@@ -2,6 +2,10 @@
 .env
 config_local.php
 
+# 데이터베이스 파일
+database.db
+*.db
+
 # 임시 파일
 *.log
 *.tmp

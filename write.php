@@ -10,21 +10,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($title) && !empty($author) && !empty($content)) {
         $conn = getDBConnection();
         
-        $sql = "INSERT INTO posts (title, author, content) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO posts (title, author, content) VALUES (:title, :author, :content)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $title, $author, $content);
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':author', $author);
+        $stmt->bindParam(':content', $content);
         
         if ($stmt->execute()) {
-            $stmt->close();
-            $conn->close();
             header("Location: index.php");
             exit;
         } else {
             $error = "게시글 작성에 실패했습니다.";
         }
-        
-        $stmt->close();
-        $conn->close();
     } else {
         $error = "모든 항목을 입력해주세요.";
     }

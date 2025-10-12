@@ -12,21 +12,16 @@ if ($id <= 0) {
 $conn = getDBConnection();
 
 // 게시글 조회
-$sql = "SELECT * FROM posts WHERE id = ?";
+$sql = "SELECT * FROM posts WHERE id = :id";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
+$stmt->bindParam(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
-$result = $stmt->get_result();
+$post = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($result->num_rows === 0) {
-    $stmt->close();
-    $conn->close();
+if (!$post) {
     header("Location: index.php");
     exit;
 }
-
-$post = $result->fetch_assoc();
-$stmt->close();
 
 // 폼 제출 처리
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -35,26 +30,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $content = $_POST['content'] ?? '';
     
     if (!empty($title) && !empty($author) && !empty($content)) {
-        $update_sql = "UPDATE posts SET title = ?, author = ?, content = ? WHERE id = ?";
+        $update_sql = "UPDATE posts SET title = :title, author = :author, content = :content WHERE id = :id";
         $update_stmt = $conn->prepare($update_sql);
-        $update_stmt->bind_param("sssi", $title, $author, $content, $id);
+        $update_stmt->bindParam(':title', $title);
+        $update_stmt->bindParam(':author', $author);
+        $update_stmt->bindParam(':content', $content);
+        $update_stmt->bindParam(':id', $id, PDO::PARAM_INT);
         
         if ($update_stmt->execute()) {
-            $update_stmt->close();
-            $conn->close();
             header("Location: view.php?id=" . $id);
             exit;
         } else {
             $error = "게시글 수정에 실패했습니다.";
         }
-        
-        $update_stmt->close();
     } else {
         $error = "모든 항목을 입력해주세요.";
     }
 }
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>

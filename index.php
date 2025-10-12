@@ -12,15 +12,16 @@ $conn = getDBConnection();
 // 전체 게시글 수 조회
 $count_sql = "SELECT COUNT(*) as total FROM posts";
 $count_result = $conn->query($count_sql);
-$total_posts = $count_result->fetch_assoc()['total'];
+$total_posts = $count_result->fetch(PDO::FETCH_ASSOC)['total'];
 $total_pages = ceil($total_posts / $posts_per_page);
 
 // 게시글 목록 조회
-$sql = "SELECT id, title, author, views, created_at FROM posts ORDER BY id DESC LIMIT ? OFFSET ?";
+$sql = "SELECT id, title, author, views, created_at FROM posts ORDER BY id DESC LIMIT :limit OFFSET :offset";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ii", $posts_per_page, $offset);
+$stmt->bindParam(':limit', $posts_per_page, PDO::PARAM_INT);
+$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
-$result = $stmt->get_result();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -54,8 +55,8 @@ $result = $stmt->get_result();
                 </tr>
             </thead>
             <tbody>
-                <?php if ($result->num_rows > 0): ?>
-                    <?php while($row = $result->fetch_assoc()): ?>
+                <?php if (count($result) > 0): ?>
+                    <?php foreach($result as $row): ?>
                         <tr>
                             <td><?php echo $row['id']; ?></td>
                             <td><a href="view.php?id=<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['title']); ?></a></td>
@@ -63,7 +64,7 @@ $result = $stmt->get_result();
                             <td><?php echo $row['views']; ?></td>
                             <td><?php echo date('Y-m-d H:i', strtotime($row['created_at'])); ?></td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
                         <td colspan="5" class="no-posts">등록된 게시글이 없습니다.</td>
@@ -84,6 +85,6 @@ $result = $stmt->get_result();
 </html>
 
 <?php
-$stmt->close();
-$conn->close();
+$stmt = null;
+$conn = null;
 ?>
