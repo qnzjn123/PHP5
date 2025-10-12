@@ -1,4 +1,4 @@
-runtime: php74
+runtime: php8
 
 context:
   git:
@@ -6,13 +6,18 @@ context:
     ref: main
 
 build:
+  base: ubuntu
   command: |
+    apt-get update
+    apt-get install -y php-cli php-mysqli
     echo "PHP 프로젝트 빌드 완료"
 
 run:
-  command: php -S 0.0.0.0:$PORT
+  command: php -S 0.0.0.0:${PORT:-8080} -t .
 
 env:
+  - name: PORT
+    value: "8080"
   - name: DB_HOST
     value: localhost
   - name: DB_USER
