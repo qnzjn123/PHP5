@@ -1,0 +1,13 @@
+{
+  "name": "php5-board",
+  "version": "1.0.0",
+  "description": "PHP 게시판 프로젝트",
+  "main": "index.php",
+  "scripts": {
+    "start": "php -S 0.0.0.0:8080",
+    "dev": "php -S localhost:8000"
+  },
+  "keywords": ["php", "board", "mysql"],
+  "author": "qnzjn123",
+  "license": "MIT"
+}
