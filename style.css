@@ -242,3 +242,206 @@ td:nth-child(1) { text-align: center; }
 td:nth-child(3) { text-align: center; }
 td:nth-child(4) { text-align: center; }
 td:nth-child(5) { text-align: center; color: #999; }
+
+/* 반응형 디자인 - 모바일 최적화 */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        padding: 0 10px;
+    }
+
+    header {
+        padding: 20px 0;
+        margin-bottom: 20px;
+    }
+
+    /* 모바일에서 테이블을 카드 형태로 변경 */
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #ffffff;
+    }
+
+    tr:hover {
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    td {
+        border: none;
+        padding: 8px 0;
+        text-align: left !important;
+        position: relative;
+        padding-left: 50%;
+    }
+
+    td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-right: 10px;
+        font-weight: 600;
+        color: #666;
+        text-align: left;
+    }
+
+    /* 번호 */
+    td:nth-child(1):before {
+        content: "번호";
+    }
+
+    /* 제목 */
+    td:nth-child(2):before {
+        content: "제목";
+    }
+
+    td:nth-child(2) {
+        font-weight: 500;
+        font-size: 15px;
+        word-break: break-word;
+    }
+
+    /* 작성자 */
+    td:nth-child(3):before {
+        content: "작성자";
+    }
+
+    /* 조회수 */
+    td:nth-child(4):before {
+        content: "조회수";
+    }
+
+    /* 작성일 */
+    td:nth-child(5):before {
+        content: "작성일";
+    }
+
+    /* 버튼 최적화 */
+    .btn {
+        padding: 10px 18px;
+        font-size: 13px;
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .write-btn {
+        text-align: center;
+    }
+
+    .button-group {
+        text-align: center;
+    }
+
+    .button-group .btn {
+        margin: 5px 0;
+        width: 100%;
+    }
+
+    /* 폼 최적화 */
+    .post-form {
+        padding: 20px 15px;
+    }
+
+    .post-view {
+        padding: 20px 15px;
+    }
+
+    input[type="text"],
+    textarea {
+        padding: 10px;
+        font-size: 16px; /* iOS 줌 방지 */
+    }
+
+    textarea {
+        min-height: 200px;
+    }
+
+    .post-title {
+        font-size: 1.5em;
+        word-break: break-word;
+    }
+
+    .post-meta {
+        font-size: 13px;
+    }
+
+    .post-meta span {
+        display: block;
+        margin-bottom: 5px;
+        margin-right: 0;
+    }
+
+    .post-content {
+        font-size: 15px;
+        line-height: 1.7;
+        word-break: break-word;
+    }
+
+    /* 페이지네이션 최적화 */
+    .pagination a {
+        padding: 8px 10px;
+        font-size: 14px;
+        margin: 0 1px;
+    }
+
+    .no-posts {
+        padding: 40px 20px;
+        font-size: 14px;
+    }
+}
+
+/* 태블릿 크기 (768px ~ 1024px) */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 2.2em;
+    }
+
+    th:nth-child(1) { width: 10%; }
+    th:nth-child(2) { width: 40%; }
+    th:nth-child(3) { width: 15%; }
+    th:nth-child(4) { width: 12%; }
+    th:nth-child(5) { width: 23%; }
+}
+
+/* 작은 모바일 (320px ~ 480px) */
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    .btn {
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+
+    .post-form,
+    .post-view {
+        padding: 15px 10px;
+    }
+
+    .pagination a {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+}
